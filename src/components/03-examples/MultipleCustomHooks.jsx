@@ -19,7 +19,7 @@ const MultipleCustomHooks = () => {
       <hr />
 
       {loading ? (
-        <div className='alert alert-info text-center'>Loadin...</div>
+        <div className='alert alert-info text-center'>Loading...</div>
       ) : (
         <blockquote className='blockquote text-right'>
           <p className='mb-0'>{quote}</p>
