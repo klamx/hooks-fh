@@ -1,7 +1,6 @@
 import React, { useEffect, useReducer } from 'react'
 import './styles.css'
 import todoReducer from './todoReducer'
-import useForm from '../../hooks/useForm'
 import TodoList from './components/TodoList'
 import TodoForm from './components/TodoForm'
 
@@ -18,9 +17,6 @@ const init = () => {
 
 function TodoApp() {
   const [todos, dispatch] = useReducer(todoReducer, [], init)
-  const [{ description }, handleInputChange, reset] = useForm({
-    description: '',
-  })
 
   useEffect(() => {
     localStorage.setItem('todos', JSON.stringify(todos))
@@ -48,25 +44,11 @@ function TodoApp() {
     dispatch(toggleTodo)
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    if (description.trim().length <= 1) {
-      return
-    }
-
-    const newTodo = {
-      id: new Date().getTime(),
-      desc: description,
-      done: false,
-    }
-
-    const action = {
+  const handleAdd = (newTodo) => {
+    dispatch({
       type: 'add',
       payload: newTodo,
-    }
-
-    dispatch(action)
-    reset()
+    })
   }
 
   return (
@@ -85,11 +67,7 @@ function TodoApp() {
         <div className='col-5'>
           <h4>Agregar todo</h4>
           <hr />
-          <TodoForm
-            handleInputChange={handleInputChange}
-            handleSubmit={handleSubmit}
-            description={description}
-          />
+          <TodoForm handleAdd={handleAdd} />
         </div>
       </div>
     </div>

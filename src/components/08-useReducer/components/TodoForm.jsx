@@ -1,17 +1,37 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import useForm from '../../../hooks/useForm'
 
-function TodoForm(props) {
+function TodoForm({ handleAdd }) {
+  const [{ description }, handleInputChange, reset] = useForm({
+    description: '',
+  })
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (description.trim().length <= 1) {
+      return
+    }
+
+    const newTodo = {
+      id: new Date().getTime(),
+      desc: description,
+      done: false,
+    }
+    handleAdd(newTodo)
+    reset()
+  }
+
   return (
-    <form onSubmit={props.handleSubmit}>
+    <form onSubmit={handleSubmit}>
       <input
         type='text'
         name='description'
         placeholder='Aprender...'
         autoComplete='false'
         className='form-control'
-        onChange={props.handleInputChange}
-        value={props.description}
+        onChange={handleInputChange}
+        value={description}
       />
       <button type='submit' className='btn btn-outline-primary mt-1 col-12'>
         Agregar
@@ -22,8 +42,6 @@ function TodoForm(props) {
 
 TodoForm.propTypes = {
   handleSubmit: PropTypes.func,
-  handleInputChange: PropTypes.func,
-  description: PropTypes.string,
 }
 
 export default TodoForm
