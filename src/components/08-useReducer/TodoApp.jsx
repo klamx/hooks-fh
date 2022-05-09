@@ -26,6 +26,26 @@ function TodoApp() {
 
   // console.log(description)
 
+  const handleDelete = (todoId) => {
+    // console.log(todoId)
+
+    const deleteTodo = {
+      type: 'delete',
+      payload: todoId,
+    }
+
+    dispatch(deleteTodo)
+  }
+
+  const handelToggle = (todoId) => {
+    const toggleTodo = {
+      type: 'toggle',
+      payload: todoId,
+    }
+
+    dispatch(toggleTodo)
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
     if (description.trim().length <= 1) {
@@ -58,10 +78,18 @@ function TodoApp() {
             {todos.map((todo, i) => {
               return (
                 <li className='list-group-item' key={todo.id}>
-                  <p className='text-center'>
+                  <p
+                    onClick={() => handelToggle(todo.id)}
+                    className={`${todo.done && 'complete'}`}
+                  >
                     {i + 1}. {todo.desc}
                   </p>
-                  <button className='btn btn-danger'>borrar</button>
+                  <button
+                    onClick={() => handleDelete(todo.id)}
+                    className='btn btn-danger'
+                  >
+                    borrar
+                  </button>
                 </li>
               )
             })}
