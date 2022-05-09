@@ -2,6 +2,8 @@ import React, { useEffect, useReducer } from 'react'
 import './styles.css'
 import todoReducer from './todoReducer'
 import useForm from '../../hooks/useForm'
+import TodoList from './components/TodoList'
+import TodoForm from './components/TodoForm'
 
 const init = () => {
   return JSON.parse(localStorage.getItem('todos')) || []
@@ -74,47 +76,20 @@ function TodoApp() {
 
       <div className='row'>
         <div className='col-7'>
-          <ul className='list-group list-group-flush'>
-            {todos.map((todo, i) => {
-              return (
-                <li className='list-group-item' key={todo.id}>
-                  <p
-                    onClick={() => handelToggle(todo.id)}
-                    className={`${todo.done && 'complete'}`}
-                  >
-                    {i + 1}. {todo.desc}
-                  </p>
-                  <button
-                    onClick={() => handleDelete(todo.id)}
-                    className='btn btn-danger'
-                  >
-                    borrar
-                  </button>
-                </li>
-              )
-            })}
-          </ul>
+          <TodoList
+            todos={todos}
+            handleDelete={handleDelete}
+            handelToggle={handelToggle}
+          />
         </div>
         <div className='col-5'>
           <h4>Agregar todo</h4>
           <hr />
-          <form onSubmit={handleSubmit}>
-            <input
-              type='text'
-              name='description'
-              placeholder='Aprender...'
-              autoComplete='false'
-              className='form-control'
-              onChange={handleInputChange}
-              value={description}
-            />
-            <button
-              type='submit'
-              className='btn btn-outline-primary mt-1 col-12'
-            >
-              Agregar
-            </button>
-          </form>
+          <TodoForm
+            handleInputChange={handleInputChange}
+            handleSubmit={handleSubmit}
+            description={description}
+          />
         </div>
       </div>
     </div>
